@@ -39,7 +39,7 @@ public class PrefixCmd extends AdminCommand
     {
         if(event.getArgs().isEmpty())
         {
-            event.replyError("Please include a prefix or NONE");
+            event.replyError("NONE または prefix を指定してください。");
             return;
         }
         
@@ -52,7 +52,7 @@ public class PrefixCmd extends AdminCommand
         else
         {
             s.setPrefix(event.getArgs());
-            event.replySuccess(event.getGuild().getName() "上の prefix は`" + event.getArgs() + "` に設定されました。");
+            event.replySuccess(event.getGuild().getName() + "上の prefix は`" + event.getArgs() + "` に設定されました。");
         }
     }
 }
