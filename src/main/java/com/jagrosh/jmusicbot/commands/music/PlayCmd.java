@@ -52,7 +52,7 @@ public class PlayCmd extends MusicCommand
         this.loadingEmoji = bot.getConfig().getLoading();
         this.name = "play";
         this.arguments = "<title|URL|subcommand>";
-        this.help = "plays the provided song";
+        this.help = "指定された曲を再生します。";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = true;
         this.bePlaying = false;
@@ -70,15 +70,15 @@ public class PlayCmd extends MusicCommand
                 if(DJCommand.checkDJPermission(event))
                 {
                     handler.getPlayer().setPaused(false);
-                    event.replySuccess("Resumed **"+handler.getPlayer().getPlayingTrack().getInfo().title+"**.");
+                    event.replySuccess("**"+handler.getPlayer().getPlayingTrack().getInfo().title+"** の再生を再開します。");
                 }
                 else
-                    event.replyError("Only DJs can unpause the player!");
+                    event.replyError("DJ ロールを持っているユーザーのみが再生を再開できます。");
                 return;
             }
-            StringBuilder builder = new StringBuilder(event.getClient().getWarning()+" Play Commands:\n");
-            builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" <song title>` - plays the first result from Youtube");
-            builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" <URL>` - plays the provided song, playlist, or stream");
+            StringBuilder builder = new StringBuilder(event.getClient().getWarning()+" `play` コマンド:\n");
+            builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" <曲名>` - YouTube 検索での1番目の結果を再生します。");
+            builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" <URL>` - 指定された動画、プレイリスト、または配信を再生します。");
             for(Command cmd: children)
                 builder.append("\n`").append(event.getClient().getPrefix()).append(name).append(" ").append(cmd.getName()).append(" ").append(cmd.getArguments()).append("` - ").append(cmd.getHelp());
             event.reply(builder.toString());
@@ -87,7 +87,7 @@ public class PlayCmd extends MusicCommand
         String args = event.getArgs().startsWith("<") && event.getArgs().endsWith(">") 
                 ? event.getArgs().substring(1,event.getArgs().length()-1) 
                 : event.getArgs().isEmpty() ? event.getMessage().getAttachments().get(0).getUrl() : event.getArgs();
-        event.reply(loadingEmoji+" Loading... `["+args+"]`", m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), args, new ResultHandler(m,event,false)));
+        event.reply(loadingEmoji+" 読み込み中... `["+args+"]`", m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), args, new ResultHandler(m,event,false)));
     }
     
     private class ResultHandler implements AudioLoadResultHandler
@@ -107,27 +107,27 @@ public class PlayCmd extends MusicCommand
         {
             if(bot.getConfig().isTooLong(track))
             {
-                m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" This track (**"+track.getInfo().title+"**) is longer than the allowed maximum: `"
+                m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" この項目 (**"+track.getInfo().title+"**) はボットが再生できる長さを超えています: `"
                         +FormatUtil.formatTime(track.getDuration())+"` > `"+FormatUtil.formatTime(bot.getConfig().getMaxSeconds()*1000)+"`")).queue();
                 return;
             }
             AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor()))+1;
-            String addMsg = FormatUtil.filter(event.getClient().getSuccess()+" Added **"+track.getInfo().title
-                    +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) "+(pos==0?"to begin playing":" to the queue at position "+pos));
+            String addMsg = FormatUtil.filter(event.getClient().getSuccess()+" **"+track.getInfo().title
+                    +"** (`"+FormatUtil.formatTime(track.getDuration())+"`) を追加しました。 "+(pos==0?"この後すぐ再生されます。":pos+"個後に再生されます。"));
             if(playlist==null || !event.getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_ADD_REACTION))
                 m.editMessage(addMsg).queue();
             else
             {
                 new ButtonMenu.Builder()
-                        .setText(addMsg+"\n"+event.getClient().getWarning()+" This track has a playlist of **"+playlist.getTracks().size()+"** tracks attached. Select "+LOAD+" to load playlist.")
+                        .setText(addMsg+"\n"+event.getClient().getWarning()+" この項目は **"+playlist.getTracks().size()+"** 曲を含むプレイリストが付属しています。 "+LOAD+" を実行してその項目も読み込めます。")
                         .setChoices(LOAD, CANCEL)
                         .setEventWaiter(bot.getWaiter())
                         .setTimeout(30, TimeUnit.SECONDS)
                         .setAction(re ->
                         {
                             if(re.getName().equals(LOAD))
-                                m.editMessage(addMsg+"\n"+event.getClient().getSuccess()+" Loaded **"+loadPlaylist(playlist, track)+"** additional tracks!").queue();
+                                m.editMessage(addMsg+"\n"+event.getClient().getSuccess()+" **"+loadPlaylist(playlist, track)+"** を追加の項目として読み込みました。").queue();
                             else
                                 m.editMessage(addMsg).queue();
                         }).setFinalAction(m ->
@@ -175,16 +175,16 @@ public class PlayCmd extends MusicCommand
                 int count = loadPlaylist(playlist, null);
                 if(count==0)
                 {
-                    m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" All entries in this playlist "+(playlist.getName()==null ? "" : "(**"+playlist.getName()
-                            +"**) ")+"were longer than the allowed maximum (`"+bot.getConfig().getMaxTime()+"`)")).queue();
+                    m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" このプレイリストの長さ "+(playlist.getName()==null ? "" : "(**"+playlist.getName()
+                            +"**) ")+" はボットの再生できる最大の長さを超えています。 (`"+bot.getConfig().getMaxTime()+"`)")).queue();
                 }
                 else
                 {
                     m.editMessage(FormatUtil.filter(event.getClient().getSuccess()+" Found "
-                            +(playlist.getName()==null?"a playlist":"playlist **"+playlist.getName()+"**")+" with `"
-                            + playlist.getTracks().size()+"` entries; added to the queue!"
-                            + (count<playlist.getTracks().size() ? "\n"+event.getClient().getWarning()+" Tracks longer than the allowed maximum (`"
-                            + bot.getConfig().getMaxTime()+"`) have been omitted." : ""))).queue();
+                            +(playlist.getName()==null?"プレイリスト":"プレイリスト **"+playlist.getName()+"**")+" (`"
+                            + playlist.getTracks().size()+"` 件の項目) は再生待ちに追加されました。"
+                            + (count<playlist.getTracks().size() ? "\n"+event.getClient().getWarning()+" 件の項目はボットが再生できる長さ (`"
+                            + bot.getConfig().getMaxTime()+"`) を超えていたため、除外されました。" : ""))).queue();
                 }
             }
         }
