@@ -74,15 +74,15 @@ public class TransformativeAudioSourceManager extends YoutubeAudioSourceManager
         }
         catch (PatternSyntaxException ex)
         {
-            log.info(String.format("Invalid pattern syntax '%s' in source '%s'", regex, name));
+            log.info(String.format("無効なパターン '%s' が '%s' で見つかりました。", regex, name));
         }
         catch (IOException ex)
         {
-            log.warn(String.format("Failed to resolve URL in source '%s': ", name), ex);
+            log.warn(String.format("'%s' 中の URL の解決に失敗しました: ", name), ex);
         }
         catch (Exception ex)
         {
-            log.warn(String.format("Exception in source '%s'", name), ex);
+            log.warn(String.format("ソース '%s' で例外が発生しました。", name), ex);
         }
         return null;
     }
@@ -97,7 +97,7 @@ public class TransformativeAudioSourceManager extends YoutubeAudioSourceManager
         }
         catch (Exception ex)
         {
-            log.warn("Invalid transform ", ex);
+            log.warn("無効なトランスフォーム ", ex);
             return Collections.emptyList();
         }
     }

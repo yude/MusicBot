@@ -230,7 +230,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
             }
             
             if(track.getInfo().author != null && !track.getInfo().author.isEmpty())
-                eb.setFooter("Source: " + track.getInfo().author, null);
+                eb.setFooter("チャンネル: " + track.getInfo().author, null);
 
             double progress = (double)audioPlayer.getPlayingTrack().getPosition()/track.getDuration();
             eb.setDescription((audioPlayer.isPaused() ? JMusicBot.PAUSE_EMOJI : JMusicBot.PLAY_EMOJI)
@@ -249,7 +249,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
         return new MessageBuilder()
                 .setContent(FormatUtil.filter(manager.getBot().getConfig().getSuccess()+" **再生中...**"))
                 .setEmbed(new EmbedBuilder()
-                .setTitle("No music playing")
+                .setTitle("何も再生していません。")
                 .setDescription(JMusicBot.STOP_EMOJI+" "+FormatUtil.progressBar(-1)+" "+FormatUtil.volumeIcon(audioPlayer.getVolume()))
                 .setColor(guild.getSelfMember().getColor())
                 .build()).build();
@@ -262,14 +262,14 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
             long userid = getRequestMetadata().getOwner();
             AudioTrack track = audioPlayer.getPlayingTrack();
             String title = track.getInfo().title;
-            if(title==null || title.equals("Unknown Title"))
+            if(title==null || title.equals("タイトル不明"))
                 title = track.getInfo().uri;
-            return "**"+title+"** ["+(userid==0 ? "autoplay" : "<@"+userid+">")+"]"
+            return "**"+title+"** ["+(userid==0 ? "自動再生" : "<@"+userid+">")+"]"
                     + "\n" + (audioPlayer.isPaused() ? JMusicBot.PAUSE_EMOJI : JMusicBot.PLAY_EMOJI) + " "
                     + "[" + FormatUtil.formatTime(track.getDuration()) + "] "
                     + FormatUtil.volumeIcon(audioPlayer.getVolume());
         }
-        else return "No music playing " + JMusicBot.STOP_EMOJI + " " + FormatUtil.volumeIcon(audioPlayer.getVolume());
+        else return "何も再生していません " + JMusicBot.STOP_EMOJI + " " + FormatUtil.volumeIcon(audioPlayer.getVolume());
     }
     
     // Audio Send Handler methods
