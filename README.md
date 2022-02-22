@@ -196,7 +196,7 @@ version: '3'
 services:
   app:
     restart: always
-    build: https://github.com/jagrosh/MusicBot.git
+    build: https://github.com/yude/MusicBot.git
     volumes:
       - "./data:/app"
 ```
