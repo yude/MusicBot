@@ -200,6 +200,18 @@ services:
     volumes:
       - "./data:/app"
 ```
+* 自分のコンピュータで Docker イメージをビルドしたくない場合、ビルド済みのイメージを利用することができます。
+  * 現在、`amd64` アーキテクチャ向けイメージのみ提供しています。
+* ビルド済みのイメージを利用する場合、上の YAML 記述の代わりに以下を利用してください。
+```yaml
+version: '3'
+services:
+  app:
+    restart: always
+    image: ghcr.io/yude/musicbot:master
+    volumes:
+      - "./data:/app"
+```
 4. `docker-compose up -d` を実行します。
 
 ## アップデート
