@@ -49,39 +49,39 @@ public class DebugCmd extends OwnerCommand
     protected void execute(CommandEvent event)
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("```\nSystem Properties:");
+        sb.append("```\nシステムの設定:");
         for(String key: PROPERTIES)
             sb.append("\n  ").append(key).append(" = ").append(System.getProperty(key));
-        sb.append("\n\nJMusicBot Information:")
-                .append("\n  Version = ").append(OtherUtil.getCurrentVersion())
-                .append("\n  Owner = ").append(bot.getConfig().getOwnerId())
-                .append("\n  Prefix = ").append(bot.getConfig().getPrefix())
-                .append("\n  AltPrefix = ").append(bot.getConfig().getAltPrefix())
-                .append("\n  MaxSeconds = ").append(bot.getConfig().getMaxSeconds())
-                .append("\n  NPImages = ").append(bot.getConfig().useNPImages())
-                .append("\n  SongInStatus = ").append(bot.getConfig().getSongInStatus())
-                .append("\n  StayInChannel = ").append(bot.getConfig().getStay())
-                .append("\n  UseEval = ").append(bot.getConfig().useEval())
-                .append("\n  UpdateAlerts = ").append(bot.getConfig().useUpdateAlerts());
-        sb.append("\n\nDependency Information:")
-                .append("\n  JDA Version = ").append(JDAInfo.VERSION)
-                .append("\n  JDA-Utilities Version = ").append(JDAUtilitiesInfo.VERSION)
-                .append("\n  Lavaplayer Version = ").append(PlayerLibrary.VERSION);
+        sb.append("\n\nボットの情報:")
+                .append("\n  バージョン = ").append(OtherUtil.getCurrentVersion())
+                .append("\n  管理者 = ").append(bot.getConfig().getOwnerId())
+                .append("\n  prefix = ").append(bot.getConfig().getPrefix())
+                .append("\n  代わりの prefix = ").append(bot.getConfig().getAltPrefix())
+                .append("\n  最大の項目の長さ = ").append(bot.getConfig().getMaxSeconds())
+                .append("\n  サムネイル = ").append(bot.getConfig().useNPImages())
+                .append("\n  ステータスに状態を表示 = ").append(bot.getConfig().getSongInStatus())
+                .append("\n  チャンネルに留まる = ").append(bot.getConfig().getStay())
+                .append("\n  デバッグ = ").append(bot.getConfig().useEval())
+                .append("\n  アップデートの通知 = ").append(bot.getConfig().useUpdateAlerts());
+        sb.append("\n\n依存ライブラリの情報:")
+                .append("\n  JDA バージョン = ").append(JDAInfo.VERSION)
+                .append("\n  JDA-Utilities バージョン = ").append(JDAUtilitiesInfo.VERSION)
+                .append("\n  Lavaplayer バージョン = ").append(PlayerLibrary.VERSION);
         long total = Runtime.getRuntime().totalMemory() / 1024 / 1024;
         long used = total - (Runtime.getRuntime().freeMemory() / 1024 / 1024);
-        sb.append("\n\nRuntime Information:")
-                .append("\n  Total Memory = ").append(total)
-                .append("\n  Used Memory = ").append(used);
-        sb.append("\n\nDiscord Information:")
+        sb.append("\n\nランタイムの情報:")
+                .append("\n  RAM 総量 = ").append(total)
+                .append("\n  使用済み RAM = ").append(used);
+        sb.append("\n\nDiscord の情報:")
                 .append("\n  ID = ").append(event.getJDA().getSelfUser().getId())
-                .append("\n  Guilds = ").append(event.getJDA().getGuildCache().size())
-                .append("\n  Users = ").append(event.getJDA().getUserCache().size());
+                .append("\n  サーバー数 = ").append(event.getJDA().getGuildCache().size())
+                .append("\n  ユーザー数 = ").append(event.getJDA().getUserCache().size());
         sb.append("\n```");
         
         if(event.isFromType(ChannelType.PRIVATE) 
                 || event.getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_ATTACH_FILES))
             event.getChannel().sendFile(sb.toString().getBytes(), "debug_information.txt").queue();
         else
-            event.reply("Debug Information: " + sb.toString());
+            event.reply("デバッグ情報: " + sb.toString());
     }
 }

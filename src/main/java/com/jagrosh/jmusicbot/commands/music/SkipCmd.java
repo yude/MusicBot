@@ -32,7 +32,7 @@ public class SkipCmd extends MusicCommand
     {
         super(bot);
         this.name = "skip";
-        this.help = "votes to skip the current song";
+        this.help = "再生中の項目をスキップするか、スキップに投票します。";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = true;
         this.bePlaying = true;
@@ -45,7 +45,7 @@ public class SkipCmd extends MusicCommand
         RequestMetadata rm = handler.getRequestMetadata();
         if(event.getAuthor().getIdLong() == rm.getOwner())
         {
-            event.reply(event.getClient().getSuccess()+" Skipped **"+handler.getPlayer().getPlayingTrack().getInfo().title+"**");
+            event.reply(event.getClient().getSuccess()+" **"+handler.getPlayer().getPlayingTrack().getInfo().title+"** をスキップしました。");
             handler.getPlayer().stopTrack();
         }
         else
@@ -53,21 +53,23 @@ public class SkipCmd extends MusicCommand
             int listeners = (int)event.getSelfMember().getVoiceState().getChannel().getMembers().stream()
                     .filter(m -> !m.getUser().isBot() && !m.getVoiceState().isDeafened()).count();
             String msg;
-            if(handler.getVotes().contains(event.getAuthor().getId()))
-                msg = event.getClient().getWarning()+" You already voted to skip this song `[";
-            else
-            {
-                msg = event.getClient().getSuccess()+" You voted to skip the song `[";
-                handler.getVotes().add(event.getAuthor().getId());
-            }
+            
             int skippers = (int)event.getSelfMember().getVoiceState().getChannel().getMembers().stream()
                     .filter(m -> handler.getVotes().contains(m.getUser().getId())).count();
             int required = (int)Math.ceil(listeners * bot.getSettingsManager().getSettings(event.getGuild()).getSkipRatio());
-            msg += skippers + " votes, " + required + "/" + listeners + " needed]`";
+            
+            if(handler.getVotes().contains(event.getAuthor().getId()))
+                msg = event.getClient().getWarning()+" 既に `[" + skippers + " votes, " + required + "/" + listeners + " needed]` のスキップに投票しています。";
+            else
+            {
+                msg = event.getClient().getWarning()+" `[" + skippers + " 件の投票, " + required + "/" + listeners + " 票が必要]` のスキップに投票しました。";
+                handler.getVotes().add(event.getAuthor().getId());
+            }
+            
             if(skippers>=required)
             {
-                msg += "\n" + event.getClient().getSuccess() + " Skipped **" + handler.getPlayer().getPlayingTrack().getInfo().title
-                    + "** " + (rm.getOwner() == 0L ? "(autoplay)" : "(requested by **" + rm.user.username + "**)");
+                msg += "\n" + event.getClient().getSuccess() + " **" + handler.getPlayer().getPlayingTrack().getInfo().title
+                    + "** をスキップしました。" + (rm.getOwner() == 0L ? "(自動再生)" : "(**" + rm.user.username + "** によって追加されました)");
                 handler.getPlayer().stopTrack();
             }
             event.reply(msg);

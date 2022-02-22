@@ -33,7 +33,7 @@ public class EvalCmd extends OwnerCommand
     {
         this.bot = bot;
         this.name = "eval";
-        this.help = "evaluates nashorn code";
+        this.help = "デバッグ用のログを出力します。";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.guildOnly = false;
     }
@@ -49,11 +49,11 @@ public class EvalCmd extends OwnerCommand
         se.put("channel", event.getChannel());
         try
         {
-            event.reply(event.getClient().getSuccess()+" Evaluated Successfully:\n```\n"+se.eval(event.getArgs())+" ```");
+            event.reply(event.getClient().getSuccess()+" 正常に出力しました:\n```\n"+se.eval(event.getArgs())+" ```");
         } 
         catch(Exception e)
         {
-            event.reply(event.getClient().getError()+" An exception was thrown:\n```\n"+e+" ```");
+            event.reply(event.getClient().getError()+" 例外が発生しました:\n```\n"+e+" ```");
         }
     }
     

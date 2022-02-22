@@ -30,7 +30,7 @@ public class ShuffleCmd extends MusicCommand
     {
         super(bot);
         this.name = "shuffle";
-        this.help = "shuffles songs you have added";
+        this.help = "あなたが追加した動画の再生待ちの順番をシャッフルします。";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = true;
         this.bePlaying = true;
@@ -44,13 +44,13 @@ public class ShuffleCmd extends MusicCommand
         switch (s) 
         {
             case 0:
-                event.replyError("You don't have any music in the queue to shuffle!");
+                event.replyError("再生待ちにはあなたの追加した項目はありません。");
                 break;
             case 1:
-                event.replyWarning("You only have one song in the queue!");
+                event.replyWarning("再生待ちには1つしかあなたの追加した項目はありません。");
                 break;
             default:
-                event.replySuccess("You successfully shuffled your "+s+" entries.");
+                event.replySuccess(s+" 件の項目をシャッフルしました。");
                 break;
         }
     }
