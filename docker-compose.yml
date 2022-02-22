@@ -3,5 +3,6 @@ services:
   app:
     restart: always
     build: .
+    image: ghcr.io/yude/MusicBot
     volumes:
       - "./data:/app"
