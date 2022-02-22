@@ -34,7 +34,7 @@ public class SettcCmd extends AdminCommand
     {
         this.name = "settc";
         this.help = "ボット用のテキストチャンネルを設定します。";
-        this.arguments = "<channel|NONE>";
+        this.arguments = "<チャンネル|NONE>";
         this.aliases = bot.getConfig().getAliases(this.name);
     }
     

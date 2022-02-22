@@ -30,7 +30,7 @@ public class SetgameCmd extends OwnerCommand
     {
         this.name = "setgame";
         this.help = "ボットがプレイ中のゲームの表示を設定します。";
-        this.arguments = "[action] [game]";
+        this.arguments = "[アクション] [タイトル]";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.guildOnly = false;
         this.children = new OwnerCommand[]{
@@ -126,7 +126,7 @@ public class SetgameCmd extends OwnerCommand
             this.name = "watch";
             this.aliases = new String[]{"watching"};
             this.help = "ボットが視聴中の項目を設定します。";
-            this.arguments = "<title>";
+            this.arguments = "<タイトル>";
             this.guildOnly = false;
         }
 

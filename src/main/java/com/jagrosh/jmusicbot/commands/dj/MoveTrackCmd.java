@@ -19,7 +19,7 @@ public class MoveTrackCmd extends DJCommand
         super(bot);
         this.name = "movetrack";
         this.help = "再生待ちにある特定の項目の順番を変更します。";
-        this.arguments = "<from> <to>";
+        this.arguments = "<現在の場所> <変更先の場所>";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.bePlaying = true;
     }

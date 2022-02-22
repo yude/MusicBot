@@ -34,7 +34,7 @@ public class SetdjCmd extends AdminCommand
     {
         this.name = "setdj";
         this.help = "DJ 用のグループを設定します。";
-        this.arguments = "<rolename|NONE>";
+        this.arguments = "<ロール名|NONE>";
         this.aliases = bot.getConfig().getAliases(this.name);
     }
     

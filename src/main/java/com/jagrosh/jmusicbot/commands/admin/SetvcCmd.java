@@ -34,7 +34,7 @@ public class SetvcCmd extends AdminCommand
     {
         this.name = "setvc";
         this.help = "ボット用のボイスチャンネルを設定します。";
-        this.arguments = "<channel|NONE>";
+        this.arguments = "<チャンネル|NONE>";
         this.aliases = bot.getConfig().getAliases(this.name);
     }
     

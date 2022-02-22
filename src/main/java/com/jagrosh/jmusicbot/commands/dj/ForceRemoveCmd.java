@@ -39,7 +39,7 @@ public class ForceRemoveCmd extends DJCommand
         super(bot);
         this.name = "forceremove";
         this.help = "指定したユーザーによって追加されたすべての項目を再生待ちから削除します。";
-        this.arguments = "<user>";
+        this.arguments = "<ユーザー>";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.beListening = false;
         this.bePlaying = true;

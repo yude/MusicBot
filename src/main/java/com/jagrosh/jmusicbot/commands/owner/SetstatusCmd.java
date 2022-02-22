@@ -30,7 +30,7 @@ public class SetstatusCmd extends OwnerCommand
     {
         this.name = "setstatus";
         this.help = "ボットのオンライン状況を設定します。";
-        this.arguments = "<status>";
+        this.arguments = "<ステータス>";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.guildOnly = false;
     }
