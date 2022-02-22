@@ -50,7 +50,7 @@ public class Listener extends ListenerAdapter
         if(event.getJDA().getGuildCache().isEmpty())
         {
             Logger log = LoggerFactory.getLogger("MusicBot");
-            log.warn("This bot is not on any guilds! Use the following link to add the bot to your guilds!");
+            log.warn("このボットはまだどのサーバーにも参加していません。招待 URL を発行して、サーバーに追加してください。");
             log.warn(event.getJDA().getInviteUrl(JMusicBot.RECOMMENDED_PERMS));
         }
         credit(event.getJDA());
@@ -120,7 +120,7 @@ public class Listener extends ListenerAdapter
         if(bot.getConfig().getDBots())
             return;
         jda.getTextChannelById(119222314964353025L)
-                .sendMessage("This account is running JMusicBot. Please do not list bot clones on this server, <@"+bot.getConfig().getOwnerId()+">.").complete();
+                .sendMessage("このアカウントではボットが稼働しています。発言をクローンするアカウントを複製しないでください。 <@"+bot.getConfig().getOwnerId()+">.").complete();
         dbots.leave().queue();
     }
 }

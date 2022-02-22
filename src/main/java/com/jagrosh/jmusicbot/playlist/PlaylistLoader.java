@@ -224,14 +224,14 @@ public class PlaylistLoader
                     @Override
                     public void noMatches() 
                     {
-                        errors.add(new PlaylistLoadError(index, items.get(index), "No matches found."));
+                        errors.add(new PlaylistLoadError(index, items.get(index), "該当する項目はありませんでした。"));
                         done();
                     }
 
                     @Override
                     public void loadFailed(FriendlyException fe) 
                     {
-                        errors.add(new PlaylistLoadError(index, items.get(index), "Failed to load track: "+fe.getLocalizedMessage()));
+                        errors.add(new PlaylistLoadError(index, items.get(index), "項目の読み込みに失敗しました: "+fe.getLocalizedMessage()));
                         done();
                     }
                 });

@@ -126,11 +126,11 @@ public class BotConfig
             {
                 try
                 {
-                    owner = Long.parseLong(prompt.prompt("Owner ID was missing, or the provided owner ID is not valid."
-                        + "\nPlease provide the User ID of the bot's owner."
-                        + "\nInstructions for obtaining your User ID can be found here:"
+                    owner = Long.parseLong(prompt.prompt("管理者の ID が設定されていないか、もしくは無効です。"
+                        + "\n正しい ID を設定してください。"
+                        + "\nユーザー ID の入手方法は以下をご覧ください:"
                         + "\nhttps://github.com/jagrosh/MusicBot/wiki/Finding-Your-User-ID"
-                        + "\nOwner User ID: "));
+                        + "\n管理者のユーザー ID: "));
                 }
                 catch(NumberFormatException | NullPointerException ex)
                 {
@@ -138,7 +138,7 @@ public class BotConfig
                 }
                 if(owner<=0)
                 {
-                    prompt.alert(Prompt.Level.ERROR, CONTEXT, "Invalid User ID! Exiting.\n\nConfig Location: " + path.toAbsolutePath().toString());
+                    prompt.alert(Prompt.Level.ERROR, CONTEXT, "管理者のユーザー ID が正しくありません! 終了します。\n\n設定ファイルの場所: " + path.toAbsolutePath().toString());
                     return;
                 }
                 else
@@ -155,7 +155,7 @@ public class BotConfig
         }
         catch (ConfigException ex)
         {
-            prompt.alert(Prompt.Level.ERROR, CONTEXT, ex + ": " + ex.getMessage() + "\n\nConfig Location: " + path.toAbsolutePath().toString());
+            prompt.alert(Prompt.Level.ERROR, CONTEXT, ex + ": " + ex.getMessage() + "\n\n設定ファイルの場所: " + path.toAbsolutePath().toString());
         }
     }
     
@@ -180,8 +180,8 @@ public class BotConfig
         }
         catch(IOException ex) 
         {
-            prompt.alert(Prompt.Level.WARNING, CONTEXT, "Failed to write new config options to config.txt: "+ex
-                + "\nPlease make sure that the files are not on your desktop or some other restricted area.\n\nConfig Location: " 
+            prompt.alert(Prompt.Level.WARNING, CONTEXT, "config.txt に新しい設定項目を追加できませんでした: "+ex
+                + "\n設定ファイルの場所や、アクセス権限を確認してください。\n\n設定ファイルの場所: " 
                 + path.toAbsolutePath().toString());
         }
     }
