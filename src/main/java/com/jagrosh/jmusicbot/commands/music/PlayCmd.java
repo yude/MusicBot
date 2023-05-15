@@ -173,7 +173,12 @@ public class PlayCmd extends MusicCommand
             else
             {
                 int count = loadPlaylist(playlist, null);
-                if(count==0)
+                if(playlist.getTracks().size() == 0)
+                {
+                    m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" The playlist "+(playlist.getName()==null ? "" : "(**"+playlist.getName()
+                            +"**) ")+" could not be loaded or contained 0 entries")).queue();
+                }
+                else if(count==0)
                 {
                     m.editMessage(FormatUtil.filter(event.getClient().getWarning()+" このプレイリストの長さ "+(playlist.getName()==null ? "" : "(**"+playlist.getName()
                             +"**) ")+" はボットの再生できる最大の長さを超えています。 (`"+bot.getConfig().getMaxTime()+"`)")).queue();
